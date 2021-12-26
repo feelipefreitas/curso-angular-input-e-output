@@ -1,31 +1,44 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
+import { IncreaseValueComponent } from './increase-value/increase-value.component';
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
+
+  let fixture: ComponentFixture<AppComponent>;
+  let component: AppComponent;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        IncreaseValueComponent
       ],
     }).compileComponents();
   });
 
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+  });
+
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'curso-angular-testes-input-e-output'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('curso-angular-testes-input-e-output');
-  });
+  it('should increase the value', () => {
+    spyOn(component, 'onValueIncreased');
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    component.value = 5;
+
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('curso-angular-testes-input-e-output app is running!');
+
+    const increaseValueComponent = fixture.debugElement.query(By.directive(IncreaseValueComponent)).componentInstance;
+
+    increaseValueComponent.increase();
+    // increaseValueComponent.valueIncreasedEmit.emit(increaseValueComponent.value + 1);
+
+    expect(component.onValueIncreased).toHaveBeenCalledWith(6);
   });
 });
