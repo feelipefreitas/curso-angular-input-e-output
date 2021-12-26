@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'curso-angular-testes-input-e-output';
+  value: number = 0;
+
+  onValueIncreased(valueIncreased: number) {
+    this.value = valueIncreased;
+  }
 }
